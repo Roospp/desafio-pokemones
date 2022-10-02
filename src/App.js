@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useState } from "react";
+import { BrowserRouter, Route, Routes, } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Context from "./Context";
+import Home from "./views/Home";
+import NotFound from "./views/NotFound";
+import Pokemones from "./views/Pokemones";
 
 function App() {
+  const [name, setName] = useState('')
+  const estadoName = {name, setName}
+  const imagen = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg'
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Context.Provider value={{estadoName, imagen}}>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/pokemones" element={<Pokemones />} />
+            <Route path="/pokemones/:pokeName" element={<Pokemones />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </Context.Provider>
     </div>
   );
 }
